@@ -65,7 +65,18 @@ def finalizer_compra():
             print("Pagamento efetuado com PIX, obrigado pela preferencia!")
         else:
             print("Indique uma forma de pagamento corresta!")
+            
+'''   ADAPTAR CODIGO          
+def atualizar_estoque():
+    for prod in estoque:
+        for item in carrinho:
+            if item['nome'] == prod['nome']:
+                prod['quantidade'] -= item['quantidade']
 
+print(estoque)
+atualizar_estoque()
+print(estoque)
+'''
 
 def menu():
     while True:
