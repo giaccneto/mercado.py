@@ -10,8 +10,7 @@ def cadastrar_produto():
     produto = {
         "produto": nome_produto,
         "preco": preco_produto,
-        "qunatidade": quantidade_produto
-
+        "quantidade": quantidade_produto
     }
     produtos.append(produto)
     print("Produto cadastrado com sucesso!")
@@ -28,24 +27,25 @@ def adicionar_no_carrinho():
     qtd = int(input("Digite a quantidade desejada: "))
 
     for produto in produtos:
-
-        if produto["produto"].lower() == selecionar_produto.lower():
+        if qtd > produto["quantidade"]:
+            print("Quantidade desejada indisponivel!")
+        elif qtd <= 0:
+            print('Quantidade deve ser um numero positivo!')
+        elif produto["produto"].lower() == selecionar_produto.lower():
             carrinho.append({"produto": produto["produto"], "quantidade": qtd, "preco": produto["preco"]})
             print("Produto adicionado ao carrinho...")
         else:
             print("Produto não encontrado!")
 
-    print(carrinho)
-
-def listar_produtos_carrinho():
-    for produto in carrinho:
-        for key, value in produto.items():
-            print(f'{key}:{value}')
+# def listar_produtos_carrinho():
+#     for produto in carrinho:
+#         for key, value in produto.items():
+#             print(f'{key}:{value}')
 
 
 def remover_produto_carrinho():
     selecionar_produto = input("Digite o nome do produto desejado: ")
-    for produto in produtos:
+    for produto in carrinho:
         if produto['produto'].lower() == selecionar_produto.lower():
             carrinho.remove(produto)
             print("Produto removido do carrinho...")
@@ -56,7 +56,9 @@ def remover_produto_carrinho():
 def finalizer_compra():
     resposta = input("Deseja finalizar a compra?(SIM/NAO): ")
     if resposta.lower() == 'sim':
+        calcular_carinho()
         forma_pagamento = input("Qual a forma de pagamento? (Dinheiro, Cartão ou PIX): ")
+
         if forma_pagamento.lower() == 'dinheiro':
             print("Pagamento efetuado em dinheiro, obrigado pela preferencia!")
         elif forma_pagamento.lower() == 'cartao':
@@ -65,25 +67,29 @@ def finalizer_compra():
             print("Pagamento efetuado com PIX, obrigado pela preferencia!")
         else:
             print("Indique uma forma de pagamento corresta!")
-            
-'''   ADAPTAR CODIGO          
+    atualizar_estoque()
+
+
 def atualizar_estoque():
-    for prod in estoque:
+    for prod in produtos:
         for item in carrinho:
-            if item['nome'] == prod['nome']:
+            if item['produto'] == prod['produto']:
                 prod['quantidade'] -= item['quantidade']
 
-print(estoque)
-atualizar_estoque()
-print(estoque)
+
 
 def calcular_carinho():
     valor = 0.0
     for prod in carrinho:
         prod['preco'] *= prod['quantidade']
         valor += prod['preco']
-    print(valor)
-'''
+    print(f'Total a pagar R$ {valor}')
+
+def ver_carrinho():
+    for produto in carrinho:
+        for key, value in produto.items():
+            print(f'{key}: {value}')
+
 
 def menu():
     while True:
@@ -92,7 +98,8 @@ def menu():
                       "\n2 - VER PRODUTOS DISPONIVEIS: "
                       "\n3 - ADICIONAR UM PRODUTO NO CARINHO: "
                       "\n4 - REMOVER UM PRODUTO DO CARRINHO: "
-                      "\n5 - FINALIZAR A COMPRA: "
+                      "\n5 - VER CARRINHO DE COMPRAS: "
+                      "\n6 - FINALIZAR A COMPRA: "
                       "\n0 - PARA SAIR: ")
         if opcao == "0":
             print("Saindo do sistema...")
@@ -105,11 +112,13 @@ def menu():
             adicionar_no_carrinho()
         elif opcao == "4":
             remover_produto_carrinho()
-            #listar_produtos_carrinho()
         elif opcao == "5":
+            ver_carrinho()
+        elif opcao == "6":
             finalizer_compra()
         else:
             print("Entrar uma opção valida!")
+
 
 if __name__ == "__main__":
     menu()
