@@ -76,6 +76,13 @@ def atualizar_estoque():
 print(estoque)
 atualizar_estoque()
 print(estoque)
+
+def calcular_carinho():
+    valor = 0.0
+    for prod in carrinho:
+        prod['preco'] *= prod['quantidade']
+        valor += prod['preco']
+    print(valor)
 '''
 
 def menu():
